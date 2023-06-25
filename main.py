@@ -1,26 +1,27 @@
 
-#import pandas as pd
+import pandas as pd
 from google.oauth2 import service_account
 import gspread
+import matplotlib.pyplot as plt
 
 #Retusn the total cans sold
 def total_product(sheet):
     sheet_info = sheet.get_worksheet(0)
     product_amount = sheet_info.col_values(2)
     can_total = 0
-    for x in product_amount:
 
+    for x in product_amount:
         try:
             can_total = can_total + int(x)
         except:
             pass
+
     return can_total
 
 #Returns total montly profit
 def gross_profit(sheet):
     sheet_info = sheet.get_worksheet(0)
     daily_sales = sheet_info.col_values(3)
-
     profit_total = 0
 
     for x in daily_sales:
@@ -29,6 +30,7 @@ def gross_profit(sheet):
             profit_total = profit_total + float(x)
         except:
             pass
+
     return profit_total
 
 
@@ -44,19 +46,32 @@ def main():
     gc = gspread.authorize(credentials)
 
     #Open Sheet
+    print("Opening Sheet")
     sheet1 = gc.open('MV-January')
 
     try:
+
         sheet_info = sheet1.get_worksheet(0)
+        print("Sheet Exists")
     except:
         print('Error Occurred, Sheet could not open')
         return
 
-    print(total_product(sheet1))
+    #print(total_product(sheet1))
+    #print(gross_profit(sheet1))
+    x = [1, 2, 3, 4, 5]
+    y = [10, 7, 5, 3, 1]
 
-    print(gross_profit(sheet1))
+    plt.plot(x,y)
+    plt.show()
 
     return
+
+
+
+
+
+
 
 if __name__ == '__main__':
     main()
