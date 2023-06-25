@@ -3,9 +3,6 @@
 from google.oauth2 import service_account
 import gspread
 
-#gmail to add to google doc
-#infographic-generator@infographic-generator.iam.gserviceaccount.com
-
 #Retusn the total cans sold
 def total_product(sheet):
     sheet_info = sheet.get_worksheet(0)
