@@ -4,6 +4,40 @@ from google.oauth2 import service_account
 import gspread
 import matplotlib.pyplot as plt
 
+
+def open(name):
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/spreadsheets',
+             'https://www.googleapis.com/auth/drive.file',
+             'https://www.googleapis.com/auth/drive']
+
+    # Reading Credentails
+    credentials = service_account.Credentials.from_service_account_file('infographic-generator-a3267a9c8df0.json',
+                                                                        scopes=scope)
+    gc = gspread.authorize(credentials)
+    # Open Sheet
+    print("Opening Sheet " + name)
+
+    sheet = gc.open("MV-"+name)
+
+    try:
+        sheet_info = sheet.get_worksheet(0)
+        print("Sheet Exists: " + name)
+        return sheet
+    except:
+        print('Error Occurred, Sheet missing: ' + name)
+        return None
+
+
+def plot_data(y,x_label,y_label,title2,label2):
+    plt.plot(y,  label = label2)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+
+    plt.title(title2)
+    return plt
+
+
 #Retusn the total cans sold
 def total_product(sheet):
     sheet_info = sheet.get_worksheet(0)
@@ -17,6 +51,7 @@ def total_product(sheet):
             pass
 
     return can_total
+
 
 #Returns total montly profit
 def gross_profit(sheet):
@@ -35,42 +70,43 @@ def gross_profit(sheet):
 
 
 def main():
-    scope = ['https://spreadsheets.google.com/feeds',
-             'https://www.googleapis.com/auth/spreadsheets',
-             'https://www.googleapis.com/auth/drive.file',
-             'https://www.googleapis.com/auth/drive']
+    sheet1 = open("January")
+    sheet2 = open("Febuary")
+    sheet3 = open("March")
+    sheet4 = open("April")
+    sheet5 = open("May")
 
-    # Reading Credentails
-    credentials = service_account.Credentials.from_service_account_file('infographic-generator-a3267a9c8df0.json', scopes=scope)
+    sheets = [sheet1,sheet2,sheet3,sheet4,sheet5]
 
-    gc = gspread.authorize(credentials)
-
-    #Open Sheet
-    print("Opening Sheet")
-    sheet1 = gc.open('MV-January')
-
-    try:
-
-        sheet_info = sheet1.get_worksheet(0)
-        print("Sheet Exists")
-    except:
-        print('Error Occurred, Sheet could not open')
-        return
-
-    #print(total_product(sheet1))
+    #print(total_product(sheet3))
     #print(gross_profit(sheet1))
-    x = [1, 2, 3, 4, 5]
-    y = [10, 7, 5, 3, 1]
 
-    plt.plot(x,y)
+    profit_plot = []
+    can_total = []
+    for x in sheets:
+        profit_plot.append(gross_profit(x))
+        can_total.append(total_product(x))
+
+
+
+    product_sold = plot_data(
+                            profit_plot,
+                            "Months",
+                            "Earnings",
+                            "Mavericks Sales",
+                            "Cans Sold"
+                            )
+    cans_sold = plot_data(
+                            can_total,
+                            "Months",
+                            "Cans Sold",
+                            "Mavericks Production",
+                            "Earnings"
+                            )
+    plt.legend()
     plt.show()
 
     return
-
-
-
-
-
 
 
 if __name__ == '__main__':
