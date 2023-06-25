@@ -6,8 +6,8 @@ import gspread
 #gmail to add to google doc
 #infographic-generator@infographic-generator.iam.gserviceaccount.com
 
-#Retusn the total value of sales
-def total(sheet):
+#Retusn the total cans sold
+def total_product(sheet):
     sheet_info = sheet.get_worksheet(0)
     product_amount = sheet_info.col_values(2)
     can_total = 0
@@ -18,6 +18,22 @@ def total(sheet):
         except:
             pass
     return can_total
+
+#Returns total montly profit
+def gross_profit(sheet):
+    sheet_info = sheet.get_worksheet(0)
+    daily_sales = sheet_info.col_values(3)
+
+    profit_total = 0
+
+    for x in daily_sales:
+        x = x.strip('$')
+        try:
+            profit_total = profit_total + float(x)
+        except:
+            pass
+    return profit_total
+
 
 def main():
     scope = ['https://spreadsheets.google.com/feeds',
@@ -39,8 +55,9 @@ def main():
         print('Error Occurred, Sheet could not open')
         return
 
-    print(total(sheet1))
-    
+    print(total_product(sheet1))
+
+    print(gross_profit(sheet1))
 
     return
 
