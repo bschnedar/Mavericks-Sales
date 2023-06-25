@@ -1,7 +1,6 @@
-import gspread
-#import pandas
-from google.oauth2 import service_account
 
+import pandas as pd
+from google.oauth2 import service_account
 import gspread
 
 
@@ -23,8 +22,7 @@ def main():
 
     try:
         sheet_info = sheet1.get_worksheet(0)
-        # Get and print all records
-        print(sheet_info.get_all_records())
+        #print(sheet_info.get_all_records())
     except:
         print('Error Occurred')
     return
