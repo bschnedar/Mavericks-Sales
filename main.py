@@ -1,4 +1,3 @@
-import pandas as pd
 from google.oauth2 import service_account
 import gspread
 import matplotlib.pyplot as plt
@@ -69,6 +68,7 @@ def gross_profit(sheet):
 
 
 def main():
+
     sheet1 = open("January")
     sheet2 = open("Febuary")
     sheet3 = open("March")
@@ -77,16 +77,11 @@ def main():
 
     sheets = [sheet1,sheet2,sheet3,sheet4,sheet5]
 
-    #print(total_product(sheet3))
-    #print(gross_profit(sheet1))
-
     profit_plot = []
     can_total = []
     for x in sheets:
         profit_plot.append(gross_profit(x))
         can_total.append(total_product(x))
-
-
 
     product_sold = plot_data(
                             profit_plot,
@@ -103,7 +98,9 @@ def main():
                             "Earnings"
                             )
     plt.legend()
-    plt.show()
+    #plt.show()
+    plt.savefig(fname = "export")
+    print("image has been generated sucessfully!")
 
     return
 
