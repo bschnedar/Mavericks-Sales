@@ -37,7 +37,7 @@ def plot_data(y,x_label,y_label,title2,label2):
 
 
 #Retusn the total cans sold
-def total_product(sheet):
+def total_product(sheet) -> int:
     sheet_info = sheet.get_worksheet(0)
     product_amount = sheet_info.col_values(2)
     can_total = 0
@@ -52,7 +52,7 @@ def total_product(sheet):
 
 
 #Returns total montly profit
-def gross_profit(sheet):
+def gross_profit(sheet) -> float:
     sheet_info = sheet.get_worksheet(0)
     daily_sales = sheet_info.col_values(3)
     profit_total = 0
